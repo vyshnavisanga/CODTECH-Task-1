@@ -1,0 +1,52 @@
+import re
+
+def password_strength_checker(password):
+    """
+    Analyze the strength of a password and provide feedback.
+
+    Parameters:
+    password (str): The password to be analyzed.
+
+    Returns:
+    dict: A dictionary containing the password strength analysis results.
+    """
+    results = {
+        'length': False,
+        'complexity': False,
+        'uniqueness': False,
+        'strength': 'Weak'
+    }
+
+    # Check password length
+    if len(password) >= 12:
+        results['length'] = True
+
+    # Check password complexity
+    if (re.search(r"[a-z]", password) and 
+        re.search(r"[A-Z]", password) and 
+        re.search(r"[0-9]", password) and 
+        re.search(r"[!@#$%^&*()_+=-{};:'<>,./?]", password)):
+        results['complexity'] = True
+
+    # Check password uniqueness (simple implementation, can be improved)
+    if len(set(password)) == len(password):
+        results['uniqueness'] = True
+
+    # Determine password strength based on analysis results
+    if results['length'] and results['complexity'] and results['uniqueness']:
+        results['strength'] = 'Strong'
+    elif results['length'] and results['complexity']:
+        results['strength'] = 'Medium'
+
+    return results
+
+# Example usage
+password = input("Enter a password: ")
+results = password_strength_checker(password)
+
+print("Password Strength Analysis Results:")
+print("------------------------------------")
+print(f"Length: {results['length']}")
+print(f"Complexity: {results['complexity']}")
+print(f"Uniqueness: {results['uniqueness']}")
+print(f"Strength: {results['strength']}")
